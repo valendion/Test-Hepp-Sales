@@ -22,13 +22,19 @@ class ContactPage extends ConsumerWidget {
                 child: getAll.when(
                     data: (data) {
                       contactDb.close();
-                      List<Widget> texts = data
-                          .map((e) => Text(e.accountName.toString()))
-                          .toList();
 
-                      return Column(
-                        children: texts,
-                      );
+                      return ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: ((context, index) {
+                            var contact = data[index];
+                            return Card(
+                              child: ListTile(
+                                leading: Text(contact.contactName[0]),
+                                title: Text(contact.contactName),
+                                subtitle: Text(contact.accountName),
+                              ),
+                            );
+                          }));
                     },
                     error: (error, stackTrace) => Text(error.toString()),
                     loading: () => const CircularProgressIndicator())),
